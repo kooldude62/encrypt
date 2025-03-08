@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sonic Reborn DX Game</title>
+</head>
+<body>
+    <h1>Sonic Reborn DX</h1>
+    <div id="game-container"></div>
+
+    <script>
+        async function fetchSonicRebornGame() {
+            const gameId = '104196006065324';  // Sonic Reborn DX game ID
+
+            try {
+                // Fetch game data from our backend
+                const gameInfoResponse = await fetch(`/api/game/${gameId}`);
+                
+                if (!gameInfoResponse.ok) {
+                    throw new Error('Failed to fetch game data');
+                }
+
+                const gameData = await gameInfoResponse.json();
+                
+                console.log('Game Data:', gameData); // Log the fetched game data for debugging
+
+                if (gameData.data && gameData.data.length > 0) {
+                    const game = gameData.data[0];
+
+                    // Display game info
+                    const gameContainer = document.getElementById('game-container');
+                    gameContainer.innerHTML = '';  // Clear any previous content
+
+                    // Game Title
+                    const gameTitle = document.createElement('h2');
+                    gameTitle.textContent = game.name;
+                    gameContainer.appendChild(gameTitle);
+
+                    // Game Description
+                    const gameDesc = document.createElement('p');
+                    gameDesc.textContent = game.description || 'No description available.';
+                    gameContainer.appendChild(gameDesc);
+
+                    // Game Thumbnail
+                    const gameThumbnail = document.createElement('img');
+                    gameThumbnail.src = `https://thumbnails.roblox.com/v1/games/icons?universeIds=${gameId}&size=150x150&format=Png`;
+                    gameThumbnail.alt = game.name;
+                    gameThumbnail.style.width = '150px'; // Set the size of the thumbnail
+                    gameThumbnail.style.height = '150px'; // Set the size of the thumbnail
+                    gameContainer.appendChild(gameThumbnail);
+
+                    // Link to the game
+                    const gameLinkElement = document.createElement('a');
+                    gameLinkElement.href = `https://www.roblox.com/games/${gameId}/SEASON-2-Sonic-Reborn-DX`;
+                    gameLinkElement.textContent = 'Play Game';
+                    gameLinkElement.target = '_blank';
+                    gameContainer.appendChild(gameLinkElement);
+                } else {
+                    console.error('No data available for the game');
+                    document.getElementById('game-container').textContent = 'No data available for the game.';
+                }
+            } catch (error) {
+                console.error('Error fetching game data:', error);
+                document.getElementById('game-container').textContent = 'Error fetching game data. Please try again later.';
+            }
+        }
+
+        // Fetch and display Sonic Reborn DX
+        fetchSonicRebornGame();
+    </script>
+</body>
+</html>
