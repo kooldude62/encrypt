@@ -14,8 +14,8 @@
             const gameId = '104196006065324';  // Sonic Reborn DX game ID
 
             try {
-                // Fetch game data from our backend
-                const gameInfoResponse = await fetch(`/api/game/${gameId}`);
+                // Fetch game data from the Netlify Function (acting as a proxy)
+                const gameInfoResponse = await fetch(`https://your-netlify-site.netlify.app/.netlify/functions/getGame?gameId=${gameId}`);
                 
                 if (!gameInfoResponse.ok) {
                     throw new Error('Failed to fetch game data');
